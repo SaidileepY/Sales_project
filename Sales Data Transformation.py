@@ -116,13 +116,13 @@ spark = SparkSession.builder.appName("SupermarketSalesETL").getOrCreate()
 file_path = "/FileStore/tables/supermarket_sales___Sheet1-1.csv"
 df = spark.read.option("header", True).option("inferSchema", True).csv(file_path)
 
-# 1️⃣ Data Cleaning
+# Data Cleaning
 df = df.withColumn("Date", to_date(col("Date"), "M/d/yyyy"))
 df = df.withColumn("Time", to_timestamp(col("Time"), "HH:mm"))
 df = df.withColumn("Hour", hour(col("Time")))
 df = df.withColumn("Day_of_Week", dayofweek(col("Date")))
 
-# 2️⃣ Feature Engineering & Aggregations
+#   Aggregations
 
 # Total Sales Per Branch
 df_branch_sales = df.groupBy("Branch").agg(sum("Total").alias("Total_Sales"))
